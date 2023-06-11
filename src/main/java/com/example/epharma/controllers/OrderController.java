@@ -1,5 +1,6 @@
 package com.example.epharma.controllers;
 
+import com.example.epharma.dtos.OrderRequest;
 import com.example.epharma.model.Order;
 import com.example.epharma.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public void registerNewOrder(@RequestBody Order order) {
+    public void registerNewOrder(@RequestBody OrderRequest order) {
         orderService.addNewOrder(order);
     }
 }

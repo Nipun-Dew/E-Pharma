@@ -1,9 +1,12 @@
 package com.example.epharma.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -11,20 +14,25 @@ import java.time.LocalDate;
 
 @Entity @Table(name="t_order")
 public class Order {
+
     @Id @SequenceGenerator(name = "order_sequence", sequenceName = "order_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_sequence")
     private long id;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private Customer customer;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
+
     private int orderNumber;
-    private String customer;
-    private String customerType;
     private double unitPrice;
-
     private int quantity;
-
-    private String product;
-    private int productNumber;
     private LocalDate issuedDate;
     private String orderState;
+
     public Order() {
     }
 
@@ -44,20 +52,12 @@ public class Order {
         this.orderNumber = orderNumber;
     }
 
-    public String getCustomer() {
+    public Customer getCustomer() {
         return customer;
     }
 
-    public void setCustomer(String customer) {
+    public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    public String getCustomerType() {
-        return customerType;
-    }
-
-    public void setCustomerType(String customerType) {
-        this.customerType = customerType;
     }
 
     public double getUnitPrice() {
@@ -76,20 +76,12 @@ public class Order {
         this.quantity = quantity;
     }
 
-    public String getProduct() {
+    public Product getProduct() {
         return product;
     }
 
-    public void setProduct(String product) {
+    public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public int getProductNumber() {
-        return productNumber;
-    }
-
-    public void setProductNumber(int productNumber) {
-        this.productNumber = productNumber;
     }
 
     public LocalDate getIssuedDate() {
@@ -113,11 +105,9 @@ public class Order {
         return "Order{" +
                 "id=" + id +
                 ", orderNumber=" + orderNumber +
-                ", customer='" + customer + '\'' +
-                ", customerType='" + customerType + '\'' +
+                ", customer='" + customer.toString() + '\'' +
                 ", payment=" + unitPrice +
                 ", product='" + product + '\'' +
-                ", productNumber=" + productNumber +
                 ", issuedDate=" + issuedDate +
                 ", orderState='" + orderState + '\'' +
                 '}';
