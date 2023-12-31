@@ -5,6 +5,7 @@ import com.example.epharma.model.Product;
 import java.time.LocalDate;
 
 public class ProductRequest {
+    private long id;
     private String name;
     private long productNumber;
     private long stockNumber;
@@ -19,6 +20,7 @@ public class ProductRequest {
 
     public Product createProduct() {
         Product newProduct = new Product();
+        newProduct.setId(id);
         newProduct.setName(name);
         newProduct.setProductNumber(productNumber);
         newProduct.setStockNumber(stockNumber);

@@ -3,6 +3,7 @@ package com.example.epharma.dtos;
 import com.example.epharma.model.Customer;
 
 public class CustomerRequest {
+    private long id;
     private String name;
     private long registrationNo;
     private String customerType;
@@ -14,6 +15,7 @@ public class CustomerRequest {
 
     public Customer createCustomer() {
         Customer newCustomer = new Customer();
+        newCustomer.setId(id);
         newCustomer.setName(name);
         newCustomer.setRegistrationNo(registrationNo);
         newCustomer.setCustomerType(customerType);
@@ -21,6 +23,14 @@ public class CustomerRequest {
         newCustomer.setAddress(address);
 
         return newCustomer;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {

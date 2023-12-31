@@ -7,6 +7,7 @@ import com.example.epharma.model.Product;
 import java.time.LocalDate;
 
 public class OrderRequest {
+    private long id;
     private int orderNumber;
     private long customerId;
     private long productId;
@@ -21,6 +22,7 @@ public class OrderRequest {
 
     public Order createOrder(Customer customer, Product product) {
         Order newOrder = new Order();
+        newOrder.setId(id);
         newOrder.setOrderNumber(orderNumber);
         newOrder.setCustomer(customer);
         newOrder.setUnitPrice(unitPrice);
@@ -30,6 +32,14 @@ public class OrderRequest {
         newOrder.setOrderState(orderState);
 
         return newOrder;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getOrderNumber() {
