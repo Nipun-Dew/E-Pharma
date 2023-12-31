@@ -22,13 +22,14 @@ public class OrderResponse {
     public OrderResponse createOrderResponse(Order order) {
         OrderResponse newOrderResp = new OrderResponse();
         newOrderResp.setId(order.getId());
+        newOrderResp.setOrderNumber(order.getOrderNumber());
         newOrderResp.setCustomerId(order.getCustomer().getId());
         newOrderResp.setProductId(order.getProduct().getId());
         newOrderResp.setUnitPrice(order.getUnitPrice());
         newOrderResp.setQuantity(order.getQuantity());
         newOrderResp.setProductNumber(order.getProduct().getProductNumber());
         newOrderResp.setIssuedDate(order.getIssuedDate());
-        newOrderResp.setOrderState(order.getOrderState());
+        newOrderResp.setOrderState(order.getOrderState().name());
 
         return newOrderResp;
     }

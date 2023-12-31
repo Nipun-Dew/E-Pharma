@@ -1,7 +1,10 @@
 package com.example.epharma.model;
 
+import com.example.epharma.utils.OrderStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,7 +34,9 @@ public class Order {
     private double unitPrice;
     private int quantity;
     private LocalDate issuedDate;
-    private String orderState;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderState;
 
     public Order() {
     }
@@ -92,11 +97,11 @@ public class Order {
         this.issuedDate = issuedDate;
     }
 
-    public String getOrderState() {
+    public OrderStatus getOrderState() {
         return orderState;
     }
 
-    public void setOrderState(String orderState) {
+    public void setOrderState(OrderStatus orderState) {
         this.orderState = orderState;
     }
 
@@ -109,7 +114,7 @@ public class Order {
                 ", payment=" + unitPrice +
                 ", product='" + product + '\'' +
                 ", issuedDate=" + issuedDate +
-                ", orderState='" + orderState + '\'' +
+                ", orderState='" + orderState.toString() + '\'' +
                 '}';
     }
 }

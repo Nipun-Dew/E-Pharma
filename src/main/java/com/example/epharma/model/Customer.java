@@ -1,6 +1,9 @@
 package com.example.epharma.model;
 
+import com.example.epharma.utils.CustomerType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +22,10 @@ public class Customer {
 
     private String name;
     private long registrationNo;
-    private String customerType;
+
+    @Enumerated(EnumType.STRING)
+    private CustomerType customerType;
+
     private String contactNo;
     private String address;
 
@@ -42,11 +48,11 @@ public class Customer {
         this.registrationNo = registrationNo;
     }
 
-    public String getCustomerType() {
+    public CustomerType getCustomerType() {
         return customerType;
     }
 
-    public void setCustomerType(String customerType) {
+    public void setCustomerType(CustomerType customerType) {
         this.customerType = customerType;
     }
 

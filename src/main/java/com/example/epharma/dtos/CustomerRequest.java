@@ -1,6 +1,7 @@
 package com.example.epharma.dtos;
 
 import com.example.epharma.model.Customer;
+import com.example.epharma.utils.CustomerType;
 
 public class CustomerRequest {
     private long id;
@@ -18,7 +19,7 @@ public class CustomerRequest {
         newCustomer.setId(id);
         newCustomer.setName(name);
         newCustomer.setRegistrationNo(registrationNo);
-        newCustomer.setCustomerType(customerType);
+        newCustomer.setCustomerType(CustomerType.valueOf(customerType));
         newCustomer.setContactNo(contactNo);
         newCustomer.setAddress(address);
 

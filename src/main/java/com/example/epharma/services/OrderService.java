@@ -8,6 +8,7 @@ import com.example.epharma.dtos.OrderResponse;
 import com.example.epharma.model.Customer;
 import com.example.epharma.model.Order;
 import com.example.epharma.model.Product;
+import com.example.epharma.utils.OrderStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -90,7 +91,7 @@ public class OrderService {
 
             if (optionalOrder.isPresent()) {
                 Order newOrder = optionalOrder.get();
-                newOrder.setOrderState(orderStatus);
+                newOrder.setOrderState(OrderStatus.valueOf(orderStatus));
 
                 orderDAO.save(newOrder);
 

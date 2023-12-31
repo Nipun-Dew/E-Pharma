@@ -3,6 +3,7 @@ package com.example.epharma.dtos;
 import com.example.epharma.model.Customer;
 import com.example.epharma.model.Order;
 import com.example.epharma.model.Product;
+import com.example.epharma.utils.OrderStatus;
 
 import java.time.LocalDate;
 
@@ -29,7 +30,7 @@ public class OrderRequest {
         newOrder.setQuantity(quantity);
         newOrder.setProduct(product);
         newOrder.setIssuedDate(issuedDate);
-        newOrder.setOrderState(orderState);
+        newOrder.setOrderState(OrderStatus.valueOf(orderState));
 
         return newOrder;
     }
