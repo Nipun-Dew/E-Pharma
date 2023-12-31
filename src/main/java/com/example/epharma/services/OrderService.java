@@ -4,6 +4,7 @@ import com.example.epharma.daos.CustomerDAO;
 import com.example.epharma.daos.OrderDAO;
 import com.example.epharma.daos.ProductDAO;
 import com.example.epharma.dtos.OrderRequest;
+import com.example.epharma.dtos.OrderResponse;
 import com.example.epharma.model.Customer;
 import com.example.epharma.model.Order;
 import com.example.epharma.model.Product;
@@ -12,8 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.lang.Long.parseLong;
 
@@ -23,31 +26,49 @@ public class OrderService {
     private final CustomerDAO customerDAO;
     private final ProductDAO productDAO;
 
+    private final OrderResponse orderResponse;
+
     @Autowired
-    public OrderService(OrderDAO orderDAO, CustomerDAO customerDAO, ProductDAO productDAO) {
+    public OrderService(OrderDAO orderDAO,
+                        CustomerDAO customerDAO,
+                        ProductDAO productDAO,
+                        OrderResponse orderResponse) {
         this.orderDAO = orderDAO;
         this.customerDAO = customerDAO;
         this.productDAO = productDAO;
+        this.orderResponse = orderResponse;
     }
 
-    public ResponseEntity<List<Order>> getOrders() {
-        return ResponseEntity.ok(orderDAO.findAll());
+    public ResponseEntity<List<OrderResponse>> getOrders() {
+        try {
+            List<Order> orders = orderDAO.findAll();
+
+            return ResponseEntity.ok(orders.stream().map(orderResponse::createOrderResponse)
+                    .collect(Collectors.toList()));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ArrayList<>());
+        }
     }
 
-    public ResponseEntity<Order> getOrderById(String id) {
-        Optional<Order> optionalOrder = orderDAO.findById(parseLong(id));
+    public ResponseEntity<OrderResponse> getOrderById(String id) {
+        try {
+            Optional<Order> optionalOrder = orderDAO.findById(parseLong(id));
 
-        if(optionalOrder.isPresent()) {
-            return ResponseEntity.ok(optionalOrder.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Order());
+            return optionalOrder.map(order -> ResponseEntity.ok(orderResponse.createOrderResponse(order)))
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NO_CONTENT).body(new OrderResponse()));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(orderResponse);
         }
     }
 
     public ResponseEntity<String> placeNewOrder(OrderRequest orderRequest) {
         try {
             return saveAnOrder(orderRequest);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
@@ -57,7 +78,7 @@ public class OrderService {
         try {
             orderRequest.setId(parseLong(id));
             return saveAnOrder(orderRequest);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
@@ -67,7 +88,7 @@ public class OrderService {
         try {
             Optional<Order> optionalOrder = orderDAO.findById(parseLong(id));
 
-            if(optionalOrder.isPresent()) {
+            if (optionalOrder.isPresent()) {
                 Order newOrder = optionalOrder.get();
                 newOrder.setOrderState(orderStatus);
 
@@ -77,7 +98,7 @@ public class OrderService {
             } else {
                 throw new NullPointerException();
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(e.getMessage());
         }
@@ -87,7 +108,7 @@ public class OrderService {
         Optional<Customer> customer = customerDAO.findById(orderRequest.getCustomerId());
         Optional<Product> product = productDAO.findById(orderRequest.getProductId());
 
-        if(customer.isPresent() && product.isPresent()) {
+        if (customer.isPresent() && product.isPresent()) {
             Order newOrder = orderRequest
                     .createOrder(customer.get(), product.get());
             orderDAO.save(newOrder);

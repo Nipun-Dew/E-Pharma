@@ -1,6 +1,7 @@
 package com.example.epharma.controllers;
 
 import com.example.epharma.dtos.OrderRequest;
+import com.example.epharma.dtos.OrderResponse;
 import com.example.epharma.model.Order;
 import com.example.epharma.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,12 @@ public class OrderController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<Order>> getOrders() {
+    public ResponseEntity<List<OrderResponse>> getOrders() {
         return orderService.getOrders();
     }
 
     @GetMapping("/order/{id}")
-    public ResponseEntity<Order> getOrderById(@PathVariable String id) {
+    public ResponseEntity<OrderResponse> getOrderById(@PathVariable String id) {
         return orderService.getOrderById(id);
     }
 

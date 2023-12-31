@@ -2,6 +2,7 @@ package com.example.epharma.controllers;
 
 import com.example.epharma.dtos.CustomerRequest;
 import com.example.epharma.dtos.ProductRequest;
+import com.example.epharma.dtos.ProductResponse;
 import com.example.epharma.model.Customer;
 import com.example.epharma.model.Product;
 import com.example.epharma.services.CustomerService;
@@ -26,7 +27,7 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<Product> getOrders() {
+    public List<ProductResponse> getOrders() {
         return productService.getProducts();
     }
 
